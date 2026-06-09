@@ -84,7 +84,7 @@ Using an unordered list (<ul> and <li>) for Skills is much cleaner and easier to
 Button Type: Specify type="button" on your <button> to prevent default form submission behaviors if it's ever placed inside a form.
 Formatting: Add a missing period at the end of your "About Me" sentence and ensure consistent capitalization (e.g., <!DOCTYPE html> is standard uppercase).
 
-4.  Review my CSS code.
+4. Review my CSS code.
 
 Your CSS is a great starting point! It successfully centers the box, styles the text hierarchy, and adds a nice interactive hover effect to the button.
 To take this from a basic layout to a premium, modern design, here is a review of what can be improved, followed by a fully polished version.
