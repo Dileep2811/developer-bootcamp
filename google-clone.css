@@ -1,59 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Design Tokens & Theme Variables */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #202124;
+  --border-color: #dfe1e5;
+  
+  --button-bg: #f8f9fa;
+  --button-border: #f8f9fa;
+  --button-text: #3c4043;
+  --button-hover-bg: #f8f9fa;
+  --button-hover-border: #dadce0;
+  --button-hover-text: #202124;
+  
+  --shadow-hover: 0 1px 6px rgba(32, 33, 36, 0.28);
+  --header-footer-text: #70757a;
+  --accent-color: #1a73e8;
+  
+  --transition-speed: 0.2s;
+}
+
+/* Reset & Box Model */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Base Body Layout */
 body {
-  font-family: Arial, sans-serif;
-  height: 100vh;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile browser address bars */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.container {
+/* Header Section */
+header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 16px;
+  font-size: 13px;
+}
+
+.nav-link {
+  color: var(--text-color);
+  text-decoration: none;
+  opacity: 0.85;
+  padding: 4px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.nav-apps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.nav-apps:hover {
+  background-color: rgba(60, 64, 67, 0.08);
+}
+
+.nav-btn {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 8px 18px;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.nav-btn:hover {
+  background-color: #1557b0;
+  box-shadow: 0 1px 2px 0 rgba(66, 133, 244, 0.3), 0 1px 3px 1px rgba(66, 133, 244, 0.15);
+}
+
+/* Main Search Container */
+main {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: -60px; /* Slight offset upward for better vertical balance */
 }
 
-.container img {
-  width: 272px;
+.logo-container {
+  margin-bottom: 28px;
+  user-select: none;
 }
 
-.search-box input {
-  width: 580px;
-  padding: 12px 20px;
-  border: 1px solid #dfe1e5;
+.logo-container img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Search Form Structure */
+.search-form {
+  width: 100%;
+  max-width: 584px; /* Restrict width of the search container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Search Box Wrapper - This handles the border and shape */
+.search-box-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
   border-radius: 24px;
-  font-size: 16px;
+  padding: 0 14px;
+  height: 46px;
+  background-color: #ffffff;
+  transition: box-shadow var(--transition-speed), border-color var(--transition-speed);
+}
+
+.search-box-wrapper:hover,
+.search-box-wrapper:focus-within {
+  box-shadow: var(--shadow-hover);
+  border-color: transparent;
+}
+
+/* Search Icon inside the wrapper */
+.search-icon {
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+  color: #9aa0a6;
+}
+
+/* Text Input - Free from borders and stretches to fill the space */
+.search-input {
+  flex-grow: 1;
+  border: none;
   outline: none;
+  font-size: 16px;
+  color: var(--text-color);
+  height: 100%;
+  background: transparent;
 }
 
-.search-box input:hover {
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-  border-color: rgba(223, 225, 229, 0);
+/* Action Icon Wrapper */
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 12px;
 }
 
-.buttons {
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  opacity: 0.85;
+  transition: transform 0.1s ease, opacity var(--transition-speed);
+  border-radius: 50%;
+}
+
+.action-btn:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.action-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+}
+
+/* Buttons Styling */
+.buttons-container {
   display: flex;
   gap: 12px;
+  justify-content: center;
 }
 
-.buttons button {
-  background-color: #f8f9fa;
-  border: 1px solid #f8f9fa;
+.btn-search {
+  background-color: var(--button-bg);
+  border: 1px solid var(--button-border);
   border-radius: 4px;
-  color: #3c4043;
-  padding: 10px 16px;
+  color: var(--button-text);
+  padding: 0 16px;
   font-size: 14px;
+  height: 36px;
   cursor: pointer;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed), color var(--transition-speed), background-color var(--transition-speed);
 }
 
-.buttons button:hover {
+.btn-search:hover {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #dadce0;
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+  color: var(--button-hover-text);
+}
+
+.btn-search:focus-visible {
+  outline: 2px solid var(--accent-color);
+}
+
+/* Footer Section */
+footer {
+  background-color: #f2f2f2;
+  font-size: 14px;
+  color: var(--header-footer-text);
+}
+
+.footer-top {
+  padding: 15px 30px;
+  border-bottom: 1px solid #dadce0;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 30px;
+  gap: 20px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 27px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--header-footer-text);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 600px) {
+  header {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  
+  .footer-bottom {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 10px;
+  }
+  
+  .footer-links {
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .footer-top {
+    text-align: center;
+    padding: 15px 10px;
+  }
 }
