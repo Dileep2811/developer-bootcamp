@@ -15,7 +15,7 @@ console.log(10 % 3);
 
 let greeting = "Hello";
 let person = "World";
-console.log(greeting + " + person);
+console.log(greeting + " " + person);
 console.log(`Hi ${name}, you are ${age}`);
 console.log(name.length);
 console.log(name.toUpperCase());
