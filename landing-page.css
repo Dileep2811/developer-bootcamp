@@ -1,0 +1,93 @@
+/* Reset + basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar - uses Flexbox to space logo + links */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* logo left, links right */
+  align-items: center;
+  padding: 20px;
+  background: #333;
+  color: white;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+/* Hero - centers content vertically + horizontally */
+.hero {
+  display: flex;
+  flex-direction: column; /* stack h1, p, button */
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* 80% of screen height */
+  text-align: center;
+  background: #f4f4f4;
+}
+
+.hero button {
+  padding: 12px 24px;
+  margin-top: 20px;
+  border: none;
+  background: #333;
+  color: white;
+  cursor: pointer;
+}
+
+/* Features - 3 boxes side by side on desktop */
+.features {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.feature-box {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* space between boxes */
+  margin-top: 30px;
+}
+
+.feature {
+  background: #eee;
+  padding: 30px;
+  border-radius: 8px;
+  flex: 1; /* makes all 3 equal width */
+  max-width: 300px;
+}
+
+/* Contact */
+.contact {
+  padding: 60px 20px;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+.contact input, .contact button {
+  display: block;
+  width: 300px;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+/* RESPONSIVE: If screen < 768px, stack everything */
+@media (max-width: 768px) {
+  .feature-box {
+    flex-direction: column; /* stack features vertically */
+    align-items: center;
+  }
+  
+  .nav-links {
+    display: none; /* hide nav links on small screen for now */
+  }
+}
