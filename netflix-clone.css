@@ -24,8 +24,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Navbar - Row layout with Flexbox */
+/* Navbar - Absolutely positioned to overlay hero section */
 .navbar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,13 +38,15 @@ body {
   max-width: var(--container-max-width);
   margin: 0 auto;
   width: 100%;
+  background: transparent;
 }
 
 .logo {
   color: var(--primary-color);
   font-size: clamp(24px, 4vw, 32px);
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .signin-btn {
@@ -56,20 +63,22 @@ body {
 
 .signin-btn:hover {
   background: var(--primary-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
 }
 
-/* Hero - Flexbox center & spacing layout */
+/* Hero - Full viewport-relative spacing with gradients */
 .hero {
-  min-height: 80vh;
+  min-height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 40px 20px;
+  padding: 120px 20px 60px;
+  /* Higher padding-top to clear the absolute navbar */
   position: relative;
-  background: 
-    linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.9) 100%),
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.9) 100%),
     url('https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
 }
 
@@ -77,21 +86,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   max-width: 800px;
-  gap: 20px; /* Use Gap instead of manual margins to let Flexbox handle spacing */
+  gap: 24px;
+  /* Spacing managed purely by flex gap */
 }
 
 .hero-content h1 {
   font-size: clamp(32px, 5vw, 56px);
   font-weight: 900;
   line-height: 1.15;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .hero-content p {
   font-size: clamp(16px, 2.5vw, 22px);
   color: var(--text-secondary);
   font-weight: 400;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .cta-btn {
@@ -104,45 +115,44 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: var(--transition);
-  margin-top: 10px;
+  /* Removed manual margin-top; layout gap manages the spacing */
 }
 
 .cta-btn:hover {
   background: var(--primary-hover);
-  transform: scale(1.04);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
 }
 
-/* Features - Flexible Wrap Layout */
+/* Features - Structured with CSS Grid instead of Flexbox Wrap to ensure uniform widths */
 .features {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* Allows cards to wrap naturally on smaller screens */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
-  padding: 60px 5%;
+  padding: 80px 5%;
   max-width: var(--container-max-width);
   margin: 0 auto;
 }
 
 .feature-card {
-  /* flex-grow: 1, flex-shrink: 1, flex-basis: 300px */
-  flex: 1 1 300px;
   background: var(--card-bg);
   padding: 40px 30px;
-  border-radius: 8px;
+  border-radius: 12px;
   text-align: center;
-  border: 1px solid #222;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   transition: var(--transition);
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  border-color: #333;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .feature-card h2 {
   font-size: 22px;
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .feature-card p {
@@ -151,13 +161,19 @@ body {
   line-height: 1.6;
 }
 
-/* Mobile view modifications */
+/* Responsive Overrides */
 @media (max-width: 768px) {
   .navbar {
     padding: 20px 5%;
   }
 
+  .hero {
+    min-height: 75vh;
+    padding: 100px 16px 40px;
+  }
+
   .features {
     padding: 40px 5%;
+    gap: 20px;
   }
-}
+}
