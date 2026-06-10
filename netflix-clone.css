@@ -1,0 +1,163 @@
+:root {
+  --primary-color: #e50914;
+  --primary-hover: #c11119;
+  --bg-color: #000000;
+  --card-bg: #181818;
+  --text-color: #ffffff;
+  --text-secondary: #b3b3b3;
+  --font-main: 'Inter', Arial, sans-serif;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --container-max-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Navbar - Row layout with Flexbox */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 5%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logo {
+  color: var(--primary-color);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.signin-btn {
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.signin-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Hero - Flexbox center & spacing layout */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  background: 
+    linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.9) 100%),
+    url('https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+  gap: 20px; /* Use Gap instead of manual margins to let Flexbox handle spacing */
+}
+
+.hero-content h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.hero-content p {
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.cta-btn {
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 14px 28px;
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 10px;
+}
+
+.cta-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.04);
+}
+
+/* Features - Flexible Wrap Layout */
+.features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows cards to wrap naturally on smaller screens */
+  gap: 30px;
+  padding: 60px 5%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.feature-card {
+  /* flex-grow: 1, flex-shrink: 1, flex-basis: 300px */
+  flex: 1 1 300px;
+  background: var(--card-bg);
+  padding: 40px 30px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #222;
+  transition: var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.feature-card h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Mobile view modifications */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 20px 5%;
+  }
+
+  .features {
+    padding: 40px 5%;
+  }
+}
