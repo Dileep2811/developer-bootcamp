@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 5: Student Marks Tracker & Event Handling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="day5.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>Student Marks Tracker</h1>
+      <p>Interactive DOM Event Handling Demonstration</p>
+    </header>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Panel 1: Input Control Form -->
+      <section class="panel">
+        <h2 id="form-title">Add Student Record</h2>
+        <form id="student-form">
+          <!-- Hidden field to check if we are in Edit Mode -->
+          <input type="hidden" id="original-name">
+
+          <div class="form-group">
+            <label for="student-name">Student Name</label>
+            <input type="text" id="student-name" placeholder="e.g. Dileep Raj" required autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="student-marks">Marks (Comma Separated)</label>
+            <input type="text" id="student-marks" placeholder="e.g. 85, 90, 78" required autocomplete="off">
+            <div class="input-hint">Enter numbers separated by commas</div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="btn-submit">Add Record</button>
+        </form>
+      </section>
+
+      <!-- Panel 2: Live Records & Visualization -->
+      <section class="panel">
+        <h2>Student Records</h2>
+        <div class="records-container" id="records-list">
+          <!-- Student cards will be rendered here dynamically via JS -->
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <p>No student records added yet. Add a student to begin tracking.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Educational Event Handling Showcase -->
+    <section class="edu-section">
+      <h2>How Event Handling Works in this App</h2>
+      <div class="edu-grid">
+        
+        <div class="edu-card">
+          <h3>1. Event Listeners (<code>addEventListener</code>)</h3>
+          <p>
+            Instead of using inline HTML attributes like <code>onclick="..."</code>, we bind events in JavaScript using <code>element.addEventListener(type, callback)</code>. This keeps our markup clean and allows binding multiple actions to the same trigger.
+          </p>
+          <div class="code-snippet">
+            form.addEventListener('submit', handleFormSubmit);
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <h3>2. Preventing Default Behavior (<code>event.preventDefault()</code>)</h3>
+          <p>
+            When a form is submitted, the browser's default behavior is to reload the page or navigate to a target. By calling <code>e.preventDefault()</code> in our submit callback, we stop this refresh and allow JavaScript to process the inputs client-side without interrupts.
+          </p>
+          <div class="code-snippet">
+            e.preventDefault(); // Inside submit handler
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <h3>3. Event Delegation</h3>
+          <p>
+            Instead of adding click handlers to every edit and delete button individually (which is inefficient and fails for newly created dynamic cards), we attach a single listener to the parent container (<code>#records-list</code>). By reading <code>e.target</code>, we can determine exactly which child was clicked.
+          </p>
+          <div class="code-snippet">
+            container.addEventListener('click', (e) => { ... });
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- JavaScript Section -->
+  <script>
+    // 1. REFACTORED CORE LOGIC (StudentManager Class)
+    class StudentManager {
+      constructor() {
+        this.students = [];
+      }
+
+      calculateTotal(marks) {
+        if (!Array.isArray(marks)) return 0;
+        return marks.reduce((sum, mark) => sum + (Number(mark) || 0), 0);
+      }
+
+      addStudent(name, marks) {
+        if (!name || typeof name !== 'string') return false;
+        if (!Array.isArray(marks)) return false;
+        
+        // Check if student already exists
+        const exists = this.students.some(s => s.name.toLowerCase() === name.trim().toLowerCase());
+        if (exists) {
+          alert("A student with this name already exists. Please use a unique name or edit the existing record.");
+          return false;
+        }
+
+        this.students.push({ name: name.trim(), marks });
+        return true;
+      }
+
+      updateStudent(name, newMarks) {
+        const student = this.students.find(s => s.name.toLowerCase() === name.trim().toLowerCase());
+        if (student) {
+          student.marks = newMarks;
+          return true;
+        }
+        return false;
+      }
+
+      deleteStudent(name) {
+        const initialLen = this.students.length;
+        this.students = this.students.filter(s => s.name.toLowerCase() !== name.trim().toLowerCase());
+        return this.students.length < initialLen;
+      }
+
+      getStudents() {
+        return this.students;
+      }
+    }
+
+    // Initialize the manager instance
+    const manager = new StudentManager();
+
+    // 2. DOM ELEMENT REFERENCES
+    const studentForm = document.getElementById('student-form');
+    const studentNameInput = document.getElementById('student-name');
+    const studentMarksInput = document.getElementById('student-marks');
+    const formTitle = document.getElementById('form-title');
+    const btnSubmit = document.getElementById('btn-submit');
+    const originalNameInput = document.getElementById('original-name');
+    const recordsList = document.getElementById('records-list');
+
+    // 3. UI RENDERING FUNCTION
+    function renderRecords() {
+      const students = manager.getStudents();
+      
+      if (students.length === 0) {
+        recordsList.innerHTML = `
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <p>No student records added yet. Add a student to begin tracking.</p>
+          </div>
+        `;
+        return;
+      }
+
+      recordsList.innerHTML = ''; // Clear previous content
+
+      students.forEach(student => {
+        const total = manager.calculateTotal(student.marks);
+        
+        // Generate list of mark pills
+        const pillsHTML = student.marks
+          .map(mark => `<span class="mark-pill">${mark}</span>`)
+          .join('');
+
+        const card = document.createElement('div');
+        card.className = 'student-card';
+        card.innerHTML = `
+          <div class="student-info">
+            <div class="student-name">${student.name}</div>
+            <div class="student-marks-pills">
+              ${pillsHTML}
+            </div>
+          </div>
+          <div class="student-stats">
+            <div class="total-badge">
+              <div class="total-label">Total</div>
+              <div class="total-value">${total}</div>
+            </div>
+            <div class="actions-wrapper">
+              <!-- We embed data attributes to identify which student cards are clicked -->
+              <button class="btn-action edit" data-name="${student.name}" title="Edit Marks">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+              </button>
+              <button class="btn-action delete" data-name="${student.name}" title="Delete Student">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+        recordsList.appendChild(card);
+      });
+    }
+
+    // 4. EVENT HANDLER: Form Submission
+    studentForm.addEventListener('submit', (event) => {
+      // Prevent browser reloading behavior
+      event.preventDefault();
+
+      const name = studentNameInput.value.trim();
+      const marksString = studentMarksInput.value;
+      
+      // Parse marks: split by comma, trim whitespace, convert to numbers
+      const marks = marksString
+        .split(',')
+        .map(m => m.trim())
+        .filter(m => m !== '')
+        .map(Number);
+
+      // Validate that input numbers are actual numbers
+      if (marks.some(isNaN)) {
+        alert("Please enter only valid numbers separated by commas.");
+        return;
+      }
+
+      const isEditMode = originalNameInput.value !== '';
+
+      if (isEditMode) {
+        // Edit Mode: update existing student
+        const oldName = originalNameInput.value;
+        // If name has changed, update standard list entry
+        if (oldName.toLowerCase() !== name.toLowerCase()) {
+          // Check uniqueness before updating name
+          const exists = manager.getStudents().some(s => s.name.toLowerCase() === name.toLowerCase());
+          if (exists) {
+            alert("A student with this name already exists. Choose a different name.");
+            return;
+          }
+          // Remove old record and add new record with updated details
+          manager.deleteStudent(oldName);
+          manager.addStudent(name, marks);
+        } else {
+          manager.updateStudent(name, marks);
+        }
+        
+        // Reset form header/labels back to Add Mode
+        formTitle.textContent = "Add Student Record";
+        btnSubmit.textContent = "Add Record";
+        originalNameInput.value = '';
+      } else {
+        // Add Mode: insert new student
+        const success = manager.addStudent(name, marks);
+        if (!success) return; // Add failed (e.g. duplicate name)
+      }
+
+      // Clear the input fields & re-render GUI
+      studentForm.reset();
+      renderRecords();
+      studentNameInput.focus();
+    });
+
+    // 5. EVENT HANDLER: Event Delegation for dynamic Edit & Delete buttons
+    // Instead of adding event listeners to each card (which get deleted and recreated),
+    // we attach one handler to the parent container 'recordsList' and look at the target element.
+    recordsList.addEventListener('click', (event) => {
+      // Find the closest button element with the classes we care about
+      const editBtn = event.target.closest('.btn-action.edit');
+      const deleteBtn = event.target.closest('.btn-action.delete');
+
+      if (editBtn) {
+        // Handle Edit Click
+        const name = editBtn.getAttribute('data-name');
+        const student = manager.getStudents().find(s => s.name === name);
+        if (student) {
+          // Fill form fields with existing data
+          studentNameInput.value = student.name;
+          studentMarksInput.value = student.marks.join(', ');
+          
+          // Store original name in hidden field to track updates
+          originalNameInput.value = student.name;
+          
+          // Visual change to indicate edit state
+          formTitle.textContent = `Edit Details: ${student.name}`;
+          btnSubmit.textContent = "Save Changes";
+          
+          studentNameInput.focus();
+        }
+      } else if (deleteBtn) {
+        // Handle Delete Click
+        const name = deleteBtn.getAttribute('data-name');
+        if (confirm(`Are you sure you want to delete "${name}"?`)) {
+          manager.deleteStudent(name);
+          renderRecords();
+          
+          // Reset form to Add mode in case they were editing the deleted student
+          if (originalNameInput.value === name) {
+            studentForm.reset();
+            formTitle.textContent = "Add Student Record";
+            btnSubmit.textContent = "Add Record";
+            originalNameInput.value = '';
+          }
+        }
+      }
+    });
+
+    // Seed initial test data
+    manager.addStudent("Dileep", [85, 90, 78]);
+    manager.addStudent("Anu", [92, 88, 95]);
+    
+    // Initial Render
+    renderRecords();
+  </script>
+</body>
+</html>
