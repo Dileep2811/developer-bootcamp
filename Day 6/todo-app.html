@@ -1,24 +1,285 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo App</title>
-  <style>.completed span { text-decoration: line-through; } li { margin: 5px 0; }</style>
+  
+  <!-- Premium Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --success-hover: #059669;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-main);
+      padding: 20px;
+    }
+
+    .todo-container {
+      background: var(--card-bg);
+      padding: 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, var(--primary), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .todo-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .todo-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .todo-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .todo-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: var(--transition);
+      animation: slideIn 0.2s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .todo-item:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .todo-text {
+      flex: 1;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      word-break: break-word;
+      margin-right: 12px;
+    }
+
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .todo-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-action {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 6px;
+    }
+
+    .btn-complete {
+      background: #ecfdf5;
+      color: var(--success);
+      border: 1px solid #d1fae5;
+    }
+
+    .btn-complete:hover {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-delete {
+      background: #fef2f2;
+      color: var(--danger);
+      border: 1px solid #fee2e2;
+    }
+
+    .btn-delete:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .todo-item.completed .btn-complete {
+      background: #e2e8f0;
+      color: var(--text-muted);
+      border-color: #cbd5e1;
+    }
+  </style>
 </head>
 <body>
-  <h2>Todo List</h2>
-  <input type="text" id="taskInput" placeholder="Add a task">
-  <button id="addTask">Add</button>
-  <ul id="taskList"></ul>
+  <div class="todo-container">
+    <header>
+      <h2>Task Manager</h2>
+      <p>Organize your day, beautifully</p>
+    </header>
+
+    <!-- Wrapped in a form for proper keyboard form submission -->
+    <form id="todoForm" class="todo-form">
+      <input type="text" id="taskInput" class="todo-input" placeholder="What needs to be done?" required>
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+
+    <ul id="taskList" class="todo-list"></ul>
+  </div>
 
   <script>
-  document.getElementById('addTask').addEventListener('click', () => {
-    const taskText = document.getElementById('taskInput').value;
-    if (taskText === '') return;
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${taskText}</span> <button onclick="this.parentElement.classList.toggle('completed')">Complete</button> <button onclick="this.parentElement.remove()">Delete</button>`;
-    document.getElementById('taskList').appendChild(li);
-    document.getElementById('taskInput').value = '';
-  });
+    const todoForm = document.getElementById('todoForm');
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+
+    // Handle form submission
+    todoForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      
+      const taskText = taskInput.value.trim();
+      if (!taskText) return;
+
+      addTask(taskText);
+      taskInput.value = '';
+    });
+
+    // Create and append a task item safely with modern DOM APIs
+    function addTask(text) {
+      const li = document.createElement('li');
+      li.className = 'todo-item';
+
+      const span = document.createElement('span');
+      span.className = 'todo-text';
+      span.textContent = text; // Prevent XSS vulnerabilities
+
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'todo-actions';
+
+      const completeBtn = document.createElement('button');
+      completeBtn.type = 'button';
+      completeBtn.className = 'btn btn-action btn-complete';
+      completeBtn.textContent = 'Complete';
+      completeBtn.addEventListener('click', () => {
+        li.classList.toggle('completed');
+      });
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn btn-action btn-delete';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.addEventListener('click', () => {
+        // Micro-animation before removal
+        li.style.transform = 'scale(0.95)';
+        li.style.opacity = '0';
+        setTimeout(() => li.remove(), 150);
+      });
+
+      actionsDiv.append(completeBtn, deleteBtn);
+      li.append(span, actionsDiv);
+      taskList.appendChild(li);
+    }
   </script>
 </body>
 </html>
