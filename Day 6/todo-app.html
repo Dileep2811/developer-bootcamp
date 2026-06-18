@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo App</title>
-  
+
   <!-- Premium Modern Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -148,6 +149,7 @@
         opacity: 0;
         transform: translateY(10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -213,6 +215,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="todo-container">
     <header>
@@ -237,7 +240,7 @@
     // Handle form submission
     todoForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      
+
       const taskText = taskInput.value.trim();
       if (!taskText) return;
 
@@ -282,4 +285,5 @@
     }
   </script>
 </body>
+
 </html>
