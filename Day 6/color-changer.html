@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Color Changer</title></head>
+<body>
+  <button id="colorBtn">Change Background Color</button>
+  <script>
+  const colors = ['red', 'blue', 'green', 'purple', 'orange', 'pink'];
+  document.getElementById('colorBtn').addEventListener('click', () => {
+    document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  });
+  </script>
+</body>
+</html>

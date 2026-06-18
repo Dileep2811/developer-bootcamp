@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Counter</title></head>
+<body>
+  <h2>Counter: <span id="count">0</span></h2>
+  <button id="inc">Increment</button>
+  <button id="dec">Decrement</button>
+  <button id="reset">Reset</button>
+
+  <script>
+  let count = 0;
+  const countEl = document.getElementById('count');
+  document.getElementById('inc').addEventListener('click', () => { count++; countEl.innerHTML = count; });
+  document.getElementById('dec').addEventListener('click', () => { count--; countEl.innerHTML = count; });
+  document.getElementById('reset').addEventListener('click', () => { count = 0; countEl.innerHTML = count; });
+  </script>
+</body>
+</html>

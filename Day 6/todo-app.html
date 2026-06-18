@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo App</title>
+  <style>.completed span { text-decoration: line-through; } li { margin: 5px 0; }</style>
+</head>
+<body>
+  <h2>Todo List</h2>
+  <input type="text" id="taskInput" placeholder="Add a task">
+  <button id="addTask">Add</button>
+  <ul id="taskList"></ul>
+
+  <script>
+  document.getElementById('addTask').addEventListener('click', () => {
+    const taskText = document.getElementById('taskInput').value;
+    if (taskText === '') return;
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${taskText}</span> <button onclick="this.parentElement.classList.toggle('completed')">Complete</button> <button onclick="this.parentElement.remove()">Delete</button>`;
+    document.getElementById('taskList').appendChild(li);
+    document.getElementById('taskInput').value = '';
+  });
+  </script>
+</body>
+</html>
