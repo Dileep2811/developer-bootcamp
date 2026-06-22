@@ -54,3 +54,26 @@ form button:hover {
 @media (max-width: 600px) {
   section { margin: 20px; padding: 20px; }
 }
+
+nav {
+  background: #2563eb;
+  padding: 15px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+html {
+  scroll-behavior: smooth;
+}
